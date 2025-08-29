@@ -6,22 +6,24 @@ import com.example.demo.model.Usuario;
 import com.example.demo.repository.PedidoRepository;
 import com.example.demo.repository.ProductoRepository;
 import com.example.demo.repository.UsuarioRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api") // Ruta base para todos los endpoints
+@RequestMapping("/api")
 public class ApiController {
 
-    // Inyección de todos los repositorios que vamos a necesitar
     private final UsuarioRepository usuarioRepository;
     private final ProductoRepository productoRepository;
     private final PedidoRepository pedidoRepository;
-    // private final ResenaRepository resenaRepository; // Descomenta cuando lo necesites
 
     public ApiController(UsuarioRepository usuarioRepository, ProductoRepository productoRepository, PedidoRepository pedidoRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -35,41 +37,65 @@ public class ApiController {
 
     // --- CRUD USUARIOS (ADMIN) ---
 
-    @PostMapping("/admin/usuarios") // Crear un nuevo usuario
+    @Tag(name = "Admin: Gestión de Usuarios")
+    @Operation(summary = "Crear un nuevo usuario", description = "Crea un nuevo usuario en el sistema. Requiere rol de Administrador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos de usuario inválidos")
+    })
+    @PostMapping("/admin/usuarios")
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario nuevoUsuario) {
-        // TODO: En un caso real, la contraseña debería ser cifrada antes de guardar
         Usuario usuarioGuardado = usuarioRepository.save(nuevoUsuario);
         return new ResponseEntity<>(usuarioGuardado, HttpStatus.CREATED);
     }
 
-    @GetMapping("/admin/usuarios") // Obtener todos los usuarios
+    @Tag(name = "Admin: Gestión de Usuarios")
+    @Operation(summary = "Obtener todos los usuarios")
+    @GetMapping("/admin/usuarios")
     public ResponseEntity<List<Usuario>> getAllUsuarios() {
         return ResponseEntity.ok(usuarioRepository.findAll());
     }
-    
-    @GetMapping("/admin/usuarios/{id}") // Obtener un usuario por ID
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable String id) {
+
+    @Tag(name = "Admin: Gestión de Usuarios")
+    @Operation(summary = "Obtener un usuario por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("/admin/usuarios/{id}")
+    public ResponseEntity<Usuario> getUsuarioById(@Parameter(description = "ID del usuario a buscar") @PathVariable String id) {
         return usuarioRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/admin/usuarios/{id}") // Actualizar un usuario por ID
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable String id, @RequestBody Usuario usuarioActualizado) {
+    @Tag(name = "Admin: Gestión de Usuarios")
+    @Operation(summary = "Actualizar un usuario por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario actualizado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @PutMapping("/admin/usuarios/{id}")
+    public ResponseEntity<Usuario> updateUsuario(@Parameter(description = "ID del usuario a actualizar") @PathVariable String id, @RequestBody Usuario usuarioActualizado) {
         return usuarioRepository.findById(id)
                 .map(usuario -> {
                     usuario.setNombre(usuarioActualizado.getNombre());
                     usuario.setCorreo(usuarioActualizado.getCorreo());
                     usuario.setDireccion(usuarioActualizado.getDireccion());
-                    usuario.setTipoUsuario(usuarioActualizado.getTipoUsuario()); // Admin puede cambiar el rol
-                    // NO actualizamos la contraseña aquí por seguridad. Se hace en un endpoint aparte.
+                    usuario.setTipoUsuario(usuarioActualizado.getTipoUsuario());
                     return ResponseEntity.ok(usuarioRepository.save(usuario));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/admin/usuarios/{id}") // Eliminar un usuario por ID
-    public ResponseEntity<Void> deleteUsuario(@PathVariable String id) {
+    @Tag(name = "Admin: Gestión de Usuarios")
+    @Operation(summary = "Eliminar un usuario por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Usuario eliminado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @DeleteMapping("/admin/usuarios/{id}")
+    public ResponseEntity<Void> deleteUsuario(@Parameter(description = "ID del usuario a eliminar") @PathVariable String id) {
         if (!usuarioRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -80,14 +106,23 @@ public class ApiController {
 
     // --- CRUD PRODUCTOS (ADMIN) ---
 
-    @PostMapping("/admin/productos") // Crear un nuevo producto
+    @Tag(name = "Admin: Gestión de Productos")
+    @Operation(summary = "Crear un nuevo producto")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Producto creado")})
+    @PostMapping("/admin/productos")
     public ResponseEntity<Producto> crearProducto(@RequestBody Producto nuevoProducto) {
         Producto productoGuardado = productoRepository.save(nuevoProducto);
         return new ResponseEntity<>(productoGuardado, HttpStatus.CREATED);
     }
 
-    @PutMapping("/admin/productos/{id}") // Actualizar un producto existente
-    public ResponseEntity<Producto> updateProducto(@PathVariable String id, @RequestBody Producto productoActualizado) {
+    @Tag(name = "Admin: Gestión de Productos")
+    @Operation(summary = "Actualizar un producto existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto actualizado"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    @PutMapping("/admin/productos/{id}")
+    public ResponseEntity<Producto> updateProducto(@Parameter(description = "ID del producto a actualizar") @PathVariable String id, @RequestBody Producto productoActualizado) {
         return productoRepository.findById(id)
                 .map(producto -> {
                     producto.setNombre(productoActualizado.getNombre());
@@ -100,8 +135,14 @@ public class ApiController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/admin/productos/{id}") // Eliminar un producto
-    public ResponseEntity<Void> deleteProducto(@PathVariable String id) {
+    @Tag(name = "Admin: Gestión de Productos")
+    @Operation(summary = "Eliminar un producto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Producto eliminado"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    @DeleteMapping("/admin/productos/{id}")
+    public ResponseEntity<Void> deleteProducto(@Parameter(description = "ID del producto a eliminar") @PathVariable String id) {
         if (!productoRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
@@ -115,13 +156,21 @@ public class ApiController {
 
     // --- VISTA DE PRODUCTOS (PÚBLICO) ---
 
-    @GetMapping("/productos") // Obtener todos los productos para el catálogo
+    @Tag(name = "Cliente: Productos")
+    @Operation(summary = "Obtener todos los productos del catálogo")
+    @GetMapping("/productos")
     public ResponseEntity<List<Producto>> getAllProductosPublic() {
         return ResponseEntity.ok(productoRepository.findAll());
     }
 
-    @GetMapping("/productos/{id}") // Ver el detalle de un producto
-    public ResponseEntity<Producto> getProductoByIdPublic(@PathVariable String id) {
+    @Tag(name = "Cliente: Productos")
+    @Operation(summary = "Ver el detalle de un producto por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Producto encontrado"),
+            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<Producto> getProductoByIdPublic(@Parameter(description = "ID del producto a buscar") @PathVariable String id) {
         return productoRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -130,23 +179,32 @@ public class ApiController {
 
     // --- PERFIL DE USUARIO (CLIENTE) ---
 
-    @GetMapping("/perfil/{usuarioId}") // Ver mis datos personales
-    public ResponseEntity<Usuario> getMiPerfil(@PathVariable String usuarioId) {
-        // TODO: En un sistema real, el ID del usuario se obtendría del token de seguridad, no de la URL.
+    @Tag(name = "Cliente: Perfil")
+    @Operation(summary = "Ver mis datos personales", description = "Obtiene los datos del perfil del usuario logueado. En esta versión de prueba, se pasa el ID por la URL.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Perfil encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @GetMapping("/perfil/{usuarioId}")
+    public ResponseEntity<Usuario> getMiPerfil(@Parameter(description = "ID del usuario cuyo perfil se desea ver") @PathVariable String usuarioId) {
         return usuarioRepository.findById(usuarioId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/perfil/{usuarioId}") // Actualizar mis datos personales
-    public ResponseEntity<Usuario> updateMiPerfil(@PathVariable String usuarioId, @RequestBody Usuario datosActualizados) {
-        // TODO: Aquí también, el ID vendría del token.
+    @Tag(name = "Cliente: Perfil")
+    @Operation(summary = "Actualizar mis datos personales", description = "Permite a un usuario actualizar su nombre, dirección y teléfono.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Perfil actualizado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    @PutMapping("/perfil/{usuarioId}")
+    public ResponseEntity<Usuario> updateMiPerfil(@Parameter(description = "ID del usuario a actualizar") @PathVariable String usuarioId, @RequestBody Usuario datosActualizados) {
         return usuarioRepository.findById(usuarioId)
                 .map(usuario -> {
                     usuario.setNombre(datosActualizados.getNombre());
                     usuario.setDireccion(datosActualizados.getDireccion());
                     usuario.setNumeroDeTelefono(datosActualizados.getNumeroDeTelefono());
-                    // Un cliente NO puede cambiar su rol (tipoUsuario) ni su correo por esta vía.
                     return ResponseEntity.ok(usuarioRepository.save(usuario));
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -155,21 +213,31 @@ public class ApiController {
 
     // --- GESTIÓN DE PEDIDOS (CLIENTE) ---
 
-    @PostMapping("/pedidos") // Crear un nuevo pedido (simula el "checkout" del carrito)
+    @Tag(name = "Cliente: Pedidos")
+    @Operation(summary = "Crear un nuevo pedido", description = "Simula el checkout de un carrito de compras para crear un registro de pedido.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Pedido creado exitosamente")})
+    @PostMapping("/pedidos")
     public ResponseEntity<Pedido> crearPedido(@RequestBody Pedido nuevoPedido) {
-        // TODO: Se debería validar que el usuario y los productos existen, y que hay stock.
         Pedido pedidoGuardado = pedidoRepository.save(nuevoPedido);
         return new ResponseEntity<>(pedidoGuardado, HttpStatus.CREATED);
     }
 
-    @GetMapping("/pedidos/usuario/{usuarioId}") // Ver mi historial de pedidos
-    public ResponseEntity<List<Pedido>> getMisPedidos(@PathVariable String usuarioId) {
-        // TODO: Proteger para que un usuario solo pueda ver sus propios pedidos.
+    @Tag(name = "Cliente: Pedidos")
+    @Operation(summary = "Ver mi historial de pedidos")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Listado de pedidos del usuario")})
+    @GetMapping("/pedidos/usuario/{usuarioId}")
+    public ResponseEntity<List<Pedido>> getMisPedidos(@Parameter(description = "ID del usuario para buscar sus pedidos") @PathVariable String usuarioId) {
         return ResponseEntity.ok(pedidoRepository.findByUsuarioId(usuarioId));
     }
 
-    @GetMapping("/pedidos/{pedidoId}") // Ver el detalle de un pedido específico
-    public ResponseEntity<Pedido> getDetallePedido(@PathVariable String pedidoId) {
+    @Tag(name = "Cliente: Pedidos")
+    @Operation(summary = "Ver el detalle de un pedido específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
+            @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
+    })
+    @GetMapping("/pedidos/{pedidoId}")
+    public ResponseEntity<Pedido> getDetallePedido(@Parameter(description = "ID del pedido a buscar") @PathVariable String pedidoId) {
         return pedidoRepository.findById(pedidoId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
