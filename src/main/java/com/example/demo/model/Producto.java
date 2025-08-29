@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
-@Document(collection = "productos") // Mapea a la colección "productos"
+@Document(collection = "DB_CATALOGO") // Mapea a la colección "productos"
 public class Producto {
 
     @Id
