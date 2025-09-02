@@ -1,0 +1,39 @@
+/* ESTILO GENERALL */
+body {
+    background-color: #F7F7F7;
+    color: #333333; 
+    font-family: 'Montserrat', sans-serif; 
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: #8B4513;
+}
+
+a, button {
+    color: #2E8B57;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    background-color: #2E8B57;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.highlight {
+    color: #FFD700; /* Amarillo Mostaza para ofertas especiales */
+}
+
+.secondary-text {
+    color: #666666; /* Gris Medio para texto secundario */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
