@@ -1,39 +1,287 @@
-/* ESTILO GENERALL */
+/**
+* Template Name: Squadfree (Adaptado para HuertoHogar)
+* Author: BootstrapMade.com (Modificado)
+* Estilo base fusionado con requisitos de cliente.
+*/
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
 body {
-    background-color: #F7F7F7;
-    color: #333333; 
-    font-family: 'Montserrat', sans-serif; 
+    font-family: 'Montserrat', sans-serif; /* REQUISITO CLIENTE */
+    color: #333333; /* REQUISITO CLIENTE */
+    background-color: #F7F7F7; /* REQUISITO CLIENTE */
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    color: #8B4513;
-}
-
-a, button {
-    color: #2E8B57;
+a {
     text-decoration: none;
-    cursor: pointer;
+    color: #2E8B57; /* REQUISITO CLIENTE */
 }
 
-button {
-    background-color: #2E8B57;
-    color: white;
+a:hover {
+    color: #256d45; /* Un tono más oscuro del verde para hover */
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Playfair Display', serif; /* REQUISITO CLIENTE */
+    color: #8B4513; /* REQUISITO CLIENTE */
+}
+
+#main {
+    margin-top: 90px;
+}
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#header {
+    transition: all 0.5s;
+    z-index: 997;
+    padding: 24px 0;
+    /* Mantenemos el header oscuro del template para contraste */
+    background: #000000;
+}
+
+#header.header-scrolled {
+    background: #000000;
+    padding: 12px;
+}
+
+#header .logo h1 {
+    font-size: 24px;
+    margin: 0;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-family: "Playfair Display", serif; /* Adaptado */
+    text-transform: uppercase;
+}
+
+#header .logo h1 a,
+#header .logo h1 a:hover {
+    color: #ffffff; /* El logo debe ser blanco sobre fondo negro */
+}
+
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+.navbar a,
+.navbar a:focus {
+    font-family: 'Montserrat', sans-serif; /* Adaptado */
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff; /* Letras blancas sobre fondo negro */
+    white-space: nowrap;
+    transition: 0.3s;
+    /* ... otros estilos del template ... */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    margin-left: 10px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover>a {
+    color: #dddddd; /* Un gris claro para el hover sobre fondo negro */
+}
+
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+#hero {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    margin-bottom: -90px;
+}
+
+#video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+#hero:before { /* Overlay oscuro para legibilidad del texto */
+    content: "";
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#hero .hero-container {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding-top: 20vh;
+}
+
+#hero h1 {
+    margin: 0 0 20px 0;
+    font-size: 80px;
+    font-weight: 700;
+    line-height: 80px;
+    font-family: "Playfair Display", serif; /* REQUISITO CLIENTE */
+    color: #ffffff; /* Texto blanco sobre video */
+}
+
+#hero h2 {
+    color: #ffffff;
+    margin-bottom: 80px;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif; /* REQUISITO CLIENTE */
+    font-weight: 700;
+}
+
+/* Botón adaptado a los requisitos del cliente */
+#hero .btn-get-started {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 5px; /* REQUISITO CLIENTE */
+    transition: 0.3s ease-in-out;
+    margin: 10px;
+    text-align: center;
+    border: none; /* REQUISITO CLIENTE */
+    background-color: #2E8B57; /* REQUISITO CLIENTE */
+    color: white; /* REQUISITO CLIENTE */
+}
+
+#hero .btn-get-started:hover {
+    background: #256d45; /* Verde más oscuro */
+}
+
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 28px;
+        line-height: 36px;
+    }
+    #hero h2 {
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 30px;
+    }
+}
+
+/*--------------------------------------------------------------
+# Sections General
+--------------------------------------------------------------*/
+section {
+    padding: 60px 0;
+    overflow: hidden;
+}
+
+.section-title {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.section-title h2 {
+    font-size: 32px;
+    font-weight: bold;
+    position: relative;
+    margin-bottom: 30px;
+    color: #8B4513; /* REQUISITO CLIENTE */
+}
+
+/*--------------------------------------------------------------
+# About (Sección de Misión/Visión)
+--------------------------------------------------------------*/
+.about {
+    /* Puedes poner una imagen de fondo relevante para HuertoHogar */
+    background: url("https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=2070") center center no-repeat;
+    background-size: cover;
+    padding: 60px 0;
+    position: relative;
+}
+
+.about::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Overlay oscuro para legibilidad */
+}
+
+.about .container {
+    position: relative;
+    z-index: 10;
+}
+
+.about .content {
+    padding: 30px;
+    text-align: justify;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffffff; /* El texto debe ser blanco para leerse sobre el fondo oscuro */
+}
+
+.about .content h3 {
+    font-family: "Playfair Display", serif; /* REQUISITO CLIENTE */
+    font-weight: 300;
+    font-size: 50px;
+    color: #ffffff; /* El título debe ser blanco para leerse */
+    margin-bottom: 30px;
+}
+
+.about .content .about-btn {
+    display: inline-block;
+    background: #2E8B57; /* REQUISITO CLIENTE */
+    padding: 10px 20px; /* REQUISITO CLIENTE */
+    color: white; /* REQUISITO CLIENTE */
+    border-radius: 5px; /* REQUISITO CLIENTE */
+    transition: 0.3s;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
 }
 
-.highlight {
-    color: #FFD700; /* Amarillo Mostaza para ofertas especiales */
+.about .content .about-btn:hover {
+    background: #256d45; /* Verde más oscuro */
 }
 
-.secondary-text {
-    color: #666666; /* Gris Medio para texto secundario */
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+#footer {
+    background: #1a1a1a; /* Un gris muy oscuro para el footer */
+    padding: 30px 0;
+    color: #fff;
+    font-size: 14px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+#footer .copyright {
+    text-align: center;
+    padding-top: 30px;
+}
+
+#footer .credits {
+    padding-top: 10px;
+    text-align: center;
+    font-size: 13px;
+    color: #fff;
 }
