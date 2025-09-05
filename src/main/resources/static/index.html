@@ -1,76 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HuertoHogar - Del Campo al Hogar</title>
-    
-    <link rel="stylesheet" href="/css/main.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>HuertoHogar - Del Campo al Hogar</title>
+  <meta content="Productos frescos y de calidad directamente desde el campo hasta la puerta de nuestros clientes." name="description">
+  <meta content="verduras, frutas, delivery, campo, fresco, hogar" name="keywords">
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <link href="/css/main.css" rel="stylesheet">
+
 </head>
+
 <body>
 
-    <header>
-        <div class="container">
-            <h1>HuertoHogar</h1>
-            <p class="secondary-text">DEL CAMPO AL HOGAR</p>
-            <nav>
-                <ul>
-                    <li><a href="/user/productos.html">Tienda</a></li>
-                    <li><a href="/user/login.html">Mi Cuenta</a></li>
-                    <li><a href="/admin/login.html">Panel de Administración</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <header id="header" class="fixed-top header-transparent">
+    <div class="container d-flex align-items-center justify-content-between">
 
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Productos Frescos, Vida Sana</h2>
-            <p>Las mejores frutas y verduras, seleccionadas del campo para tu hogar.</p>
-            <a href="/user/productos.html" class="cta-button">Ver Productos</a>
-        </div>
-    </section>
+      <div class="logo">
+        <h1 class="text-light"><a href="index.html"><span>HuertoHogar</span></a></h1>
+      </div>
 
-    <main>
-        <section id="about-us" class="content-section">
-            <div class="section-container">
-                <div class="text-content">
-                    <h2>Nuestra Misión</h2>
-                    <p>Nuestra misión es proporcionar productos frescos y de calidad directamente desde el campo hasta la puerta de nuestros clientes, garantizando la frescura y el sabor en cada entrega. Nos comprometemos a fomentar una conexión más cercana entre los consumidores y los agricultores locales, apoyando prácticas agrícolas sostenibles y promoviendo una alimentación saludable en todos los hogares chilenos.</p>
-                </div>
-                <div class="image-content">
-                    <img src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=1974" alt="Agricultor local con productos frescos">
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Inicio</a></li>
+          <li><a class="nav-link scrollto" href="#mision">Nuestra Misión</a></li>
+          <li><a class="nav-link scrollto" href="#vision">Nuestra Visión</a></li>
+          <li><a class="nav-link scrollto" href="#locations">Distribución</a></li>
+          <li><a class="nav-link" href="/user/productos.html">Tienda</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav></div>
+  </header><section id="hero">
+    <video autoplay muted loop id="video-background">
+      <source src="https://cdn.pixabay.com/video/2024/02/19/200630-915444510_large.mp4" type="video/mp4">
+      Tu navegador no soporta la etiqueta de video.
+    </video>
+    <div class="hero-container" data-aos="fade-up">
+      <h1>Del Campo a tu Hogar</h1>
+      <h2>Productos frescos, vida sana. Las mejores frutas y verduras, seleccionadas para ti.</h2>
+      <a href="#mision" class="btn-get-started scrollto"><i class="bx bx-chevrons-down"></i></a>
+    </div>
+  </section><main id="main">
+
+    <section id="mision" class="about">
+      <div class="container">
+        <div class="row no-gutters">
+          <div class="content col-xl-5 d-flex align-items-stretch" data-aos="fade-up">
+            <div class="content">
+              <h3>Nuestra Misión</h3>
+              <p>
+                Proporcionar productos frescos y de calidad directamente desde el campo hasta la puerta de nuestros clientes, garantizando la frescura y el sabor en cada entrega. Nos comprometemos a fomentar una conexión más cercana entre los consumidores y los agricultores locales, apoyando prácticas agrícolas sostenibles y promoviendo una alimentación saludable en todos los hogares chilenos.
+              </p>
+              <a href="#vision" class="about-btn">Nuestra Visión <i class="bx bx-chevron-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><section id="vision" class="cta"> <div class="container">
+        <div class="row no-gutters">
+            <div class="content col-xl-5 d-flex align-items-stretch ms-auto" data-aos="fade-up">
+                <div class="content">
+                    <h3>Nuestra Visión</h3>
+                    <p>
+                        Ser la tienda online líder en la distribución de productos frescos y naturales en Chile, reconocida por nuestra calidad excepcional y servicio al cliente. Aspiramos a expandir nuestra presencia a nivel nacional e internacional, estableciendo un nuevo estándar en la distribución de productos agrícolas directos del productor al consumidor.
+                    </p>
+                    <a href="#locations" class="cta-btn">Puntos de Distribución <i class="bx bx-chevron-right"></i></a>
                 </div>
             </div>
-        </section>
-
-        <section id="vision" class="content-section alternate">
-            <div class="section-container">
-                <div class="text-content">
-                    <h2>Nuestra Visión</h2>
-                    <p>Nuestra visión es ser la tienda online líder en la distribución de productos frescos y naturales en Chile, reconocida por nuestra calidad excepcional, servicio al cliente y compromiso con la sostenibilidad. Aspiramos a expandir nuestra presencia a nivel nacional e internacional, estableciendo un nuevo estándar en la distribución de productos agrícolas directos del productor al consumidor.</p>
-                </div>
-                <div class="image-content">
-                    <img src="https://images.unsplash.com/photo-1624462213139-81b8d234f9a3?auto=format&fit=crop&q=80&w=2128" alt="Entrega de productos a domicilio">
-                </div>
-            </div>
-        </section>
-        
-        <section id="locations">
-            <div class="container">
-                <h2>Puntos de Distribución</h2>
-                <p>Operamos en más de 9 puntos a lo largo del país, incluyendo ciudades como Santiago, Puerto Montt, Villarica, Nacimiento, Viña del Mar, Valparaíso, y Concepción.</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 HuertoHogar. Todos los derechos reservados.</p>
         </div>
-    </footer>
+      </div>
+    </section><section id="locations" class="contact section-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Puntos de Distribución</h2>
+          <p>Operamos en más de 9 puntos a lo largo del país, incluyendo ciudades como Santiago, Puerto Montt, Villarica, Nacimiento, Viña del Mar, Valparaíso, y Concepción.</p>
+        </div>
+      </div>
+    </section></main><footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>HuertoHogar 2025</span></strong>. Todos los derechos reservados.
+      </div>
+      <div class="credits">
+       
+      </div>
+    </div>
+  </footer><a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-</body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  
+  </body>
+
 </html>
