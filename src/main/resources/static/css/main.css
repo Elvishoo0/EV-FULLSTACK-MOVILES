@@ -1,241 +1,77 @@
 /**
-* CSS Definitivo para HuertoHogar
-* Versión corregida para video de fondo y visibilidad de secciones.
+* CSS Definitivo para HuertoHogar v3
+* Con selectores de alta especificidad para garantizar la visibilidad del texto.
 */
 
 /*--------------------------------------------------------------
-# General
+# General y Header
 --------------------------------------------------------------*/
-body {
-    font-family: 'Montserrat', sans-serif;
-    color: #333333;
-    background-color: #F7F7F7;
-}
+body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #F7F7F7; }
+a { text-decoration: none; color: #2E8B57; }
+a:hover { color: #256d45; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; color: #8B4513; }
 
-a {
-    text-decoration: none;
-    color: #2E8B57;
-}
-
-a:hover {
-    color: #256d45;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    color: #8B4513;
-}
+#header { transition: all 0.5s; z-index: 997; padding: 24px 0; background: rgba(0, 0, 0, 0.3); }
+#header.header-scrolled { background: #000; padding: 12px 0; }
+#header .logo h1 a { color: #fff; }
+.navbar a { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #fff; padding: 10px 0 10px 30px; }
+.navbar a:hover, .navbar .active { color: #ddd; }
 
 /*--------------------------------------------------------------
-# Header
+# Hero Section (Video)
 --------------------------------------------------------------*/
-#header {
-    transition: all 0.5s;
-    z-index: 997;
-    padding: 24px 0;
-    background: rgba(0, 0, 0, 0.3); /* Ligeramente transparente */
-}
-
-#header.header-scrolled {
-    background: #000000; /* Sólido al hacer scroll */
-    padding: 12px 0;
-}
-
-#header .logo h1 a {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-#header .logo h1 {
-    font-size: 28px;
-    margin: 0;
-}
+#hero { width: 100%; height: 100vh; position: relative; overflow: hidden; }
+#hero .youtube-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+#hero .youtube-background iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; transform: translateX(-50%) translateY(-50%); }
+#hero:before { content: ""; background: rgba(0, 0, 0, 0.5); position: absolute; inset: 0; z-index: 2; }
+#hero .hero-container { position: relative; z-index: 3; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; height: 100%; color: #fff; }
+#hero h1 { margin: 0 0 20px 0; font-size: 80px; color: #fff; }
+#hero h2 { margin-bottom: 80px; font-size: 20px; font-family: 'Montserrat', sans-serif; color: #fff; }
+#hero .btn-get-started { font-size: 36px; color: #fff; border: 2px solid #fff; width: 64px; height: 64px; border-radius: 50%; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; }
 
 /*--------------------------------------------------------------
-# Navegación
---------------------------------------------------------------*/
-.navbar ul {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    list-style: none;
-    align-items: center;
-}
-.navbar li {
-    position: relative;
-}
-.navbar a, .navbar a:focus {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0 10px 30px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #ffffff;
-    white-space: nowrap;
-    transition: 0.3s;
-}
-
-.navbar a:hover, .navbar .active, .navbar li:hover > a {
-    color: #dddddd;
-}
-
-/*--------------------------------------------------------------
-# Hero Section (CÓDIGO CLAVE PARA EL VIDEO)
---------------------------------------------------------------*/
-#hero {
-    width: 100%;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-    padding: 0; /* Aseguramos que no haya padding */
-}
-
-/* Contenedor del Iframe */
-#hero .youtube-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none; /* Evita que el usuario interactúe con el video */
-}
-
-/* Estilo del Iframe para que ocupe todo el espacio y se centre */
-#hero .youtube-background iframe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100vw; /* Ancho de la ventana */
-    height: 56.25vw; /* Alto basado en una relación 16:9 */
-    min-height: 100vh; /* Alto mínimo de la ventana */
-    min-width: 177.77vh; /* Ancho mínimo basado en una relación 16:9 */
-    transform: translateX(-50%) translateY(-50%);
-}
-
-#hero:before {
-    content: "";
-    background: rgba(0, 0, 0, 0.5); /* Overlay oscuro para legibilidad */
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-}
-
-#hero .hero-container {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    height: 100%;
-    color: #fff;
-}
-
-#hero h1 {
-    margin: 0 0 20px 0;
-    font-size: 80px;
-    color: #ffffff;
-}
-
-#hero h2 {
-    color: #ffffff;
-    margin-bottom: 80px;
-    font-size: 20px;
-    font-family: 'Montserrat', sans-serif;
-}
-
-#hero .btn-get-started {
-    font-size: 36px;
-    color: #fff;
-    border: 2px solid #fff;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    transition: 0.3s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-#hero .btn-get-started:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/*--------------------------------------------------------------
-# Secciones de Contenido
+# Secciones de Contenido (¡SOLUCIÓN DEFINITIVA!)
 --------------------------------------------------------------*/
 #main {
     margin-top: -90px;
 }
-
 section {
     position: relative;
     padding: 80px 0;
     background-color: #fff;
     z-index: 5;
-    overflow: hidden;
 }
-
 .about, .cta {
     background-size: cover;
     background-attachment: fixed;
     padding: 120px 0;
 }
+.about { background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=2070'); }
+.cta { background-image: url('https://images.unsplash.com/photo-1543083477-4f785aeafaa9?auto=format&fit=crop&q=80&w=2070'); }
+.about::before, .cta::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.6); }
+.about .container, .cta .container { position: relative; }
 
-.about {
-    background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=2070');
-}
-
-.cta {
-    background-image: url('https://images.unsplash.com/photo-1543083477-4f785aeafaa9?auto=format&fit=crop&q=80&w=2070');
-}
-
-.about::before, .cta::before {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-}
-
-.about .container, .cta .container {
-    position: relative;
-}
-
+/* REGLAS MÁS ESPECÍFICAS PARA GARANTIZAR VISIBILIDAD */
 .content-box {
-    background: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    background: rgba(255, 255, 255, 0.95);
     padding: 40px;
     border-radius: 5px;
-    color: #333333; /* ¡ESTA LÍNEA HACE VISIBLE EL TEXTO DEL PÁRRAFO! */
 }
-
 .content-box h3 {
-    color: #8B4513; /* Asegura que el título tenga su color marrón */
+    color: #8B4513 !important; /* !important fuerza el color */
     font-size: 34px;
 }
-
 .content-box p {
-    color: #333333; /* Asegura que el párrafo sea oscuro */
+    color: #333333 !important; /* !important fuerza el color */
     margin-bottom: 30px;
 }
-
-.about-btn, .cta-btn {
+.content-box a.about-btn, .content-box a.cta-btn {
     display: inline-block;
     background: #2E8B57;
     padding: 10px 20px;
-    color: white;
+    color: white !important; /* !important fuerza el color del texto del botón */
     border-radius: 5px;
     transition: 0.3s;
     border: none;
     text-decoration: none;
-}
-
-.about-btn:hover, .cta-btn:hover {
-    background: #256d45;
-    color: white;
 }
