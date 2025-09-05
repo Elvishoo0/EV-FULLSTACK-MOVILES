@@ -208,18 +208,19 @@ section {
 }
 
 .content-box {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
     padding: 40px;
     border-radius: 5px;
-    color: #333;
+    color: #333333; /* ¡ESTA LÍNEA HACE VISIBLE EL TEXTO DEL PÁRRAFO! */
 }
 
 .content-box h3 {
-    color: #8B4513;
+    color: #8B4513; /* Asegura que el título tenga su color marrón */
     font-size: 34px;
 }
 
 .content-box p {
+    color: #333333; /* Asegura que el párrafo sea oscuro */
     margin-bottom: 30px;
 }
 
