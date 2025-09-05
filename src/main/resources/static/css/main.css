@@ -1,40 +1,29 @@
 /**
-* Template Name: Squadfree (Adaptado para HuertoHogar)
-* Author: BootstrapMade.com (Modificado)
-* Estilo base fusionado con requisitos de cliente.
+* CSS Definitivo para HuertoHogar
+* Versión corregida para video de fondo y visibilidad de secciones.
 */
 
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
 body {
-    font-family: 'Montserrat', sans-serif; /* REQUISITO CLIENTE */
-    color: #333333; /* REQUISITO CLIENTE */
-    background-color: #F7F7F7; /* REQUISITO CLIENTE */
+    font-family: 'Montserrat', sans-serif;
+    color: #333333;
+    background-color: #F7F7F7;
 }
 
 a {
     text-decoration: none;
-    color: #2E8B57; /* REQUISITO CLIENTE */
+    color: #2E8B57;
 }
 
 a:hover {
-    color: #256d45; /* Un tono más oscuro del verde para hover */
-    text-decoration: none;
+    color: #256d45;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Playfair Display', serif; /* REQUISITO CLIENTE */
-    color: #8B4513; /* REQUISITO CLIENTE */
-}
-
-#main {
-    margin-top: 90px;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: #8B4513;
 }
 
 /*--------------------------------------------------------------
@@ -44,244 +33,208 @@ h6 {
     transition: all 0.5s;
     z-index: 997;
     padding: 24px 0;
-    /* Mantenemos el header oscuro del template para contraste */
-    background: #000000;
+    background: rgba(0, 0, 0, 0.3); /* Ligeramente transparente */
 }
 
 #header.header-scrolled {
-    background: #000000;
-    padding: 12px;
+    background: #000000; /* Sólido al hacer scroll */
+    padding: 12px 0;
+}
+
+#header .logo h1 a {
+    color: #ffffff;
+    text-decoration: none;
 }
 
 #header .logo h1 {
-    font-size: 24px;
+    font-size: 28px;
     margin: 0;
-    line-height: 1;
-    font-weight: 700;
-    letter-spacing: 1px;
-    font-family: "Playfair Display", serif; /* Adaptado */
-    text-transform: uppercase;
-}
-
-#header .logo h1 a,
-#header .logo h1 a:hover {
-    color: #ffffff; /* El logo debe ser blanco sobre fondo negro */
 }
 
 /*--------------------------------------------------------------
-# Navigation Menu
+# Navegación
 --------------------------------------------------------------*/
-.navbar a,
-.navbar a:focus {
-    font-family: 'Montserrat', sans-serif; /* Adaptado */
-    font-size: 16px;
-    font-weight: 700;
-    color: #ffffff; /* Letras blancas sobre fondo negro */
-    white-space: nowrap;
-    transition: 0.3s;
-    /* ... otros estilos del template ... */
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+.navbar li {
+    position: relative;
+}
+.navbar a, .navbar a:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 16px;
-    margin-left: 10px;
+    padding: 10px 0 10px 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    transition: 0.3s;
 }
 
-.navbar a:hover,
-.navbar .active,
-.navbar .active:focus,
-.navbar li:hover>a {
-    color: #dddddd; /* Un gris claro para el hover sobre fondo negro */
+.navbar a:hover, .navbar .active, .navbar li:hover > a {
+    color: #dddddd;
 }
-
 
 /*--------------------------------------------------------------
-# Hero Section
+# Hero Section (CÓDIGO CLAVE PARA EL VIDEO)
 --------------------------------------------------------------*/
 #hero {
     width: 100%;
     height: 100vh;
     position: relative;
-    margin-bottom: -90px;
+    overflow: hidden;
+    padding: 0; /* Aseguramos que no haya padding */
 }
 
-#video-background {
+/* Contenedor del Iframe */
+#hero .youtube-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    z-index: -1;
+    z-index: 1;
+    pointer-events: none; /* Evita que el usuario interactúe con el video */
 }
 
-#hero:before { /* Overlay oscuro para legibilidad del texto */
+/* Estilo del Iframe para que ocupe todo el espacio y se centre */
+#hero .youtube-background iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw; /* Ancho de la ventana */
+    height: 56.25vw; /* Alto basado en una relación 16:9 */
+    min-height: 100vh; /* Alto mínimo de la ventana */
+    min-width: 177.77vh; /* Ancho mínimo basado en una relación 16:9 */
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#hero:before {
     content: "";
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5); /* Overlay oscuro para legibilidad */
     position: absolute;
     bottom: 0;
     top: 0;
     left: 0;
     right: 0;
+    z-index: 2;
 }
 
 #hero .hero-container {
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative;
+    z-index: 3;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     text-align: center;
-    padding-top: 20vh;
+    height: 100%;
+    color: #fff;
 }
 
 #hero h1 {
     margin: 0 0 20px 0;
     font-size: 80px;
-    font-weight: 700;
-    line-height: 80px;
-    font-family: "Playfair Display", serif; /* REQUISITO CLIENTE */
-    color: #ffffff; /* Texto blanco sobre video */
+    color: #ffffff;
 }
 
 #hero h2 {
     color: #ffffff;
     margin-bottom: 80px;
     font-size: 20px;
-    font-family: 'Montserrat', sans-serif; /* REQUISITO CLIENTE */
-    font-weight: 700;
-}
-
-/* Botón adaptado a los requisitos del cliente */
-#hero .btn-get-started {
     font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-size: 16px;
-    display: inline-block;
-    padding: 12px 30px;
-    border-radius: 5px; /* REQUISITO CLIENTE */
-    transition: 0.3s ease-in-out;
-    margin: 10px;
-    text-align: center;
-    border: none; /* REQUISITO CLIENTE */
-    background-color: #2E8B57; /* REQUISITO CLIENTE */
-    color: white; /* REQUISITO CLIENTE */
 }
 
+#hero .btn-get-started {
+    font-size: 36px;
+    color: #fff;
+    border: 2px solid #fff;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 #hero .btn-get-started:hover {
-    background: #256d45; /* Verde más oscuro */
-}
-
-@media (max-width: 768px) {
-    #hero h1 {
-        font-size: 28px;
-        line-height: 36px;
-    }
-    #hero h2 {
-        font-size: 18px;
-        line-height: 24px;
-        margin-bottom: 30px;
-    }
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /*--------------------------------------------------------------
-# Sections General
+# Secciones de Contenido
 --------------------------------------------------------------*/
+#main {
+    margin-top: -90px;
+}
+
 section {
-    padding: 60px 0;
+    position: relative;
+    padding: 80px 0;
+    background-color: #fff;
+    z-index: 5;
     overflow: hidden;
 }
 
-.section-title {
-    text-align: center;
-    padding-bottom: 30px;
-}
-
-.section-title h2 {
-    font-size: 32px;
-    font-weight: bold;
-    position: relative;
-    margin-bottom: 30px;
-    color: #8B4513; /* REQUISITO CLIENTE */
-}
-
-/*--------------------------------------------------------------
-# About (Sección de Misión/Visión)
---------------------------------------------------------------*/
-.about {
-    /* Puedes poner una imagen de fondo relevante para HuertoHogar */
-    background: url("https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=2070") center center no-repeat;
+.about, .cta {
     background-size: cover;
-    padding: 60px 0;
-    position: relative;
+    background-attachment: fixed;
+    padding: 120px 0;
 }
 
-.about::before {
+.about {
+    background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=2070');
+}
+
+.cta {
+    background-image: url('https://images.unsplash.com/photo-1543083477-4f785aeafaa9?auto=format&fit=crop&q=80&w=2070');
+}
+
+.about::before, .cta::before {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6); /* Overlay oscuro para legibilidad */
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
 }
 
-.about .container {
+.about .container, .cta .container {
     position: relative;
-    z-index: 10;
 }
 
-.about .content {
-    padding: 30px;
-    text-align: justify;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #ffffff; /* El texto debe ser blanco para leerse sobre el fondo oscuro */
+.content-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 5px;
+    color: #333;
 }
 
-.about .content h3 {
-    font-family: "Playfair Display", serif; /* REQUISITO CLIENTE */
-    font-weight: 300;
-    font-size: 50px;
-    color: #ffffff; /* El título debe ser blanco para leerse */
+.content-box h3 {
+    color: #8B4513;
+    font-size: 34px;
+}
+
+.content-box p {
     margin-bottom: 30px;
 }
 
-.about .content .about-btn {
+.about-btn, .cta-btn {
     display: inline-block;
-    background: #2E8B57; /* REQUISITO CLIENTE */
-    padding: 10px 20px; /* REQUISITO CLIENTE */
-    color: white; /* REQUISITO CLIENTE */
-    border-radius: 5px; /* REQUISITO CLIENTE */
+    background: #2E8B57;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
     transition: 0.3s;
     border: none;
+    text-decoration: none;
 }
 
-.about .content .about-btn:hover {
-    background: #256d45; /* Verde más oscuro */
-}
-
-/*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
-#footer {
-    background: #1a1a1a; /* Un gris muy oscuro para el footer */
-    padding: 30px 0;
-    color: #fff;
-    font-size: 14px;
-}
-
-#footer .copyright {
-    text-align: center;
-    padding-top: 30px;
-}
-
-#footer .credits {
-    padding-top: 10px;
-    text-align: center;
-    font-size: 13px;
-    color: #fff;
+.about-btn:hover, .cta-btn:hover {
+    background: #256d45;
+    color: white;
 }
