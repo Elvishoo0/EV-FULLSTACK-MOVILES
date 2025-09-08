@@ -190,3 +190,21 @@ body {
     #hero h2 { font-size: 16px; }
   }
   
+  /* Forzar que cualquier texto quede sobre todo */
+.text-super-top {
+    position: relative !important;
+    z-index: 999999 !important;  /* más alto que cualquier capa */
+    color: #fff !important;      /* asegura contraste */
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.8) !important; /* mejora legibilidad */
+  }
+  
+[data-aos]{opacity:1!important;transform:none!important;}
+#hero{position:relative} #hero .youtube-background{z-index:1;pointer-events:none}
+#hero:before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:2}
+#hero .hero-container{position:relative;z-index:3}
+.about,.cta{position:relative;overflow:hidden}
+.about::before,.cta::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:0}
+.about .container,.cta .container{position:relative;z-index:1}
+.content-box{position:relative;z-index:2}
+.text-super-top{position:relative!important;z-index:999999!important;color:#fff!important;text-shadow:2px 2px 6px rgba(0,0,0,.8)!important}
+.on-top{position:relative!important;z-index:999!important}
