@@ -1,5 +1,5 @@
 /**
-* CSS Definitivo para HuertoHogar v4
+* CSS Definitivo para HuertoHogar v5
 * Capas: video < overlay < contenido (textos)
 */
 
@@ -11,10 +11,7 @@ body {
     color: #333; 
     background-color: #F7F7F7; 
   }
-  a { 
-    text-decoration: none; 
-    color: #2E8B57; 
-  }
+  a { text-decoration: none; color: #2E8B57; }
   a:hover { color: #256d45; }
   h1, h2, h3, h4, h5, h6 { 
     font-family: 'Playfair Display', serif; 
@@ -22,10 +19,13 @@ body {
   }
   
   #header { 
+    position: fixed;
+    top: 0; left: 0; right: 0;
     transition: all 0.5s; 
     z-index: 997; 
     padding: 24px 0; 
     background: rgba(0, 0, 0, 0.3); 
+    backdrop-filter: saturate(1.2) blur(2px);
   }
   #header.header-scrolled { background: #000; padding: 12px 0; }
   #header .logo h1 a { color: #fff; }
@@ -55,7 +55,7 @@ body {
     width: 100vw; height: 56.25vw; 
     min-height: 100vh; 
     min-width: 177.77vh; 
-    transform: translateX(-50%) translateY(-50%); 
+    transform: translate(-50%, -50%); 
   }
   #hero:before { 
     content: ""; 
@@ -92,8 +92,7 @@ body {
     font-size: 36px; 
     color: #fff; 
     border: 2px solid #fff; 
-    width: 64px; 
-    height: 64px; 
+    width: 64px; height: 64px; 
     border-radius: 50%; 
     transition: 0.3s; 
     display: inline-flex; 
@@ -156,7 +155,7 @@ body {
     display: inline-block; 
     background: #2E8B57; 
     padding: 10px 20px; 
-    color: white !important; 
+    color: #fff !important; 
     border-radius: 5px; 
     transition: 0.3s; 
     border: none; 
@@ -164,10 +163,30 @@ body {
   }
   
   /*--------------------------------------------------------------
-  # Utilidad: forzar textos siempre arriba
+  # Utilidades de capas y accesibilidad visual
   --------------------------------------------------------------*/
-  .on-top { 
-    position: relative !important; 
-    z-index: 999 !important; 
+  .on-top { position: relative !important; z-index: 999 !important; }
+  
+  /* Si AOS no está cargado, mostrar igual los elementos */
+  [data-aos] { 
+    opacity: 1 !important; 
+    transform: none !important; 
+  }
+  
+  /* Mejor contraste sobre fondos complejos */
+  .text-shadow-strong { text-shadow: 2px 2px 6px rgba(0,0,0,0.65); }
+  
+  /*--------------------------------------------------------------
+  # Responsive
+  --------------------------------------------------------------*/
+  @media (max-width: 991.98px) {
+    #hero h1 { font-size: 48px; }
+    #hero h2 { font-size: 18px; margin-bottom: 48px; }
+    .content-box { padding: 28px; }
+  }
+  
+  @media (max-width: 575.98px) {
+    #hero h1 { font-size: 36px; }
+    #hero h2 { font-size: 16px; }
   }
   
