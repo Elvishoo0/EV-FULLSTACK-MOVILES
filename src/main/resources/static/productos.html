@@ -1,64 +1,85 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Productos</title>
+  <meta charset="utf-8" />
+  <title>Catálogo</title>
 
-  <!-- Tu hoja de estilos -->
-  <link rel="stylesheet" href="/css/main.css?v=1">
+  <!-- Tu CSS global -->
+  <link rel="stylesheet" href="/css/main.css?v=1" />
+
+  <!-- usa mismo host del backend para evitar CORS -->
+  <script>window.API_BASE = '/api';</script>
 
   <style>
-    /* Estilos mínimos de la grilla tipo marketplace */
-    .alix-wrap { width:min(1100px,95%); margin: 100px auto 40px; }
-    .alix-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:14px; }
-    .alix-card { background:#fff; border:1px solid #eee; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; }
-    .alix-title { font-weight:700; }
-    .alix-price { font-weight:700; opacity:.95; }
-    .alix-add { cursor:pointer; border:none; border-radius:10px; padding:10px 12px; font-weight:700; background:#2E8B57; color:#fff; }
+    /* Estilo mínimo del listado */
+    .wrap { width:min(1100px,95%); margin: 100px auto 40px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:14px; }
+    .card { background:#fff; border:1px solid #eee; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; }
+    .title { font-weight:700; line-height:1.3; }
+    .price { font-weight:700; opacity:.95; }
+    .btn  { cursor:pointer; border:none; border-radius:10px; padding:10px 12px; font-weight:700; background:#2E8B57; color:#fff; }
+    .muted{ opacity:.7; }
+    .cart-pill { background:#eee; border-radius:999px; padding:6px 10px; font-weight:700; }
   </style>
-
-  <!-- Usa el mismo host del backend para evitar CORS -->
-  <script> window.API_BASE = '/api'; </script>
 </head>
 <body>
-  <div class="alix-wrap">
-    <h2>Productos</h2>
-    <div id="alix-grid" class="alix-grid" aria-live="polite"></div>
+  <div class="wrap">
+    <div class="topbar">
+      <h2>Productos</h2>
+      <a href="/" class="muted">← Volver al inicio</a>
+    </div>
+
+    <div id="status" class="muted">Cargando catálogo…</div>
+    <div id="grid" class="grid" aria-live="polite" hidden></div>
   </div>
 
   <script>
     const CLP = new Intl.NumberFormat('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
-    const mount = document.getElementById('alix-grid');
+    const grid   = document.getElementById('grid');
+    const status = document.getElementById('status');
 
-    // Carrito simple en localStorage
-    let cart = JSON.parse(localStorage.getItem('hh_cart')||'{}');
-    const save = ()=>localStorage.setItem('hh_cart', JSON.stringify(cart));
-    const addToCart = id => { cart[id] = (cart[id]||0) + 1; save(); };
+    // carrito simple en localStorage
+    let cart = JSON.parse(localStorage.getItem('hh_cart') || '{}');
+    const saveCart = () => localStorage.setItem('hh_cart', JSON.stringify(cart));
+    const addToCart = (id) => { cart[id] = (cart[id]||0) + 1; saveCart(); toast('Producto agregado'); };
 
-    // Render de tarjetas: [Nombre] [Precio] [Agregar]
-    function render(list){
-      mount.innerHTML = '';
-      list.forEach(p=>{
-        const el = document.createElement('article');
-        el.className = 'alix-card';
-        el.dataset.id = p.id;
-        el.innerHTML = `
-          <div class="alix-title">${p.nombre}</div>
-          <div class="alix-price">${CLP.format(Number(p.precio)||0)}</div>
-          <button class="alix-add" type="button">Agregar al carrito</button>
-        `;
-        el.querySelector('.alix-add').addEventListener('click', ()=> addToCart(p.id));
-        mount.appendChild(el);
-      });
+    function toast(msg){
+      status.textContent = msg;
+      status.classList.remove('muted');
+      setTimeout(()=>{ status.textContent = ''; status.classList.add('muted'); }, 1200);
     }
 
-    // Trae productos desde tu API Java/Mongo
+    function render(list){
+      grid.innerHTML = '';
+      list.forEach(p=>{
+        const art = document.createElement('article');
+        art.className = 'card';
+        art.dataset.id = p.id;
+        art.innerHTML = `
+          <div class="title">${p.nombre}</div>
+          <div class="price">${CLP.format(Number(p.precio)||0)}</div>
+          <button class="btn" type="button">Agregar al carrito</button>
+        `;
+        art.querySelector('.btn').addEventListener('click', ()=> addToCart(p.id));
+        grid.appendChild(art);
+      });
+      status.textContent = '';
+      grid.hidden = false;
+    }
+
     fetch(`${window.API_BASE}/productos`)
-      .then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })
-      .then(data=> render(data))
+      .then(r=>{ if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(data => {
+        if(!Array.isArray(data) || data.length===0){
+          status.textContent = 'No hay productos cargados.';
+          return;
+        }
+        render(data);
+      })
       .catch(err=>{
-        console.error('Error cargando /api/productos', err);
-        mount.innerHTML = '<p>No se pudo cargar el catálogo. Reintenta más tarde.</p>';
+        console.error('Error /api/productos', err);
+        status.textContent = 'No se pudo cargar el catálogo. Reintenta más tarde.';
       });
   </script>
 </body>
