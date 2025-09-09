@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HuertoHogar · Tienda</title>
+
+  <!-- Fuentes usadas por tu CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Tu hoja de estilos principal (la que subiste) -->
+  <link rel="stylesheet" href="main.css" />
+
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://unpkg.com/lucide-static@0.454.0/font/lucide.css" />
+
+  <style>
+    :root{ --hh-green:#2E8B57; --hh-brown:#8B4513; --hh-bg:#F7F7F7; }
+    main{ margin-top: 90px; }
+    .container{ width: min(1200px, 92%); margin-inline: auto; }
+    #header{ display:flex; align-items:center; }
+    #header .logo{ display:flex; align-items:center; gap:12px; color:#fff; }
+    #header .logo img{ width:36px; height:36px; border-radius:6px; object-fit:cover; }
+    .cart-btn{ position:relative; display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,.35); color:#fff; }
+    .cart-count{ position:absolute; top:-8px; right:-8px; background:#fff; color:#000; border-radius:999px; font-size:12px; padding:2px 6px; font-weight:700; }
+    .toolbar{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin: 12px 0 24px; }
+    .toolbar .left, .toolbar .right{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .search{ padding:10px 12px; border-radius:8px; border:1px solid #ddd; min-width: 220px; }
+    .select{ padding:10px 12px; border-radius:8px; border:1px solid #ddd; background:#fff; }
+    .grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:18px; }
+    .col-12{ grid-column: span 12; }
+    .col-6{ grid-column: span 6; }
+    .col-4{ grid-column: span 4; }
+    .col-3{ grid-column: span 3; }
+    @media (max-width: 991.98px){ .col-3{ grid-column: span 6; } .col-4{ grid-column: span 6; } }
+    @media (max-width: 575.98px){ .col-3,.col-4,.col-6{ grid-column: span 12; } }
+    .card{ background:#fff; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,.08); overflow:hidden; display:flex; flex-direction:column; }
+    .card .thumb{ aspect-ratio: 4/3; background:#eee; display:block; width:100%; object-fit:cover; }
+    .card .body{ padding:14px; display:flex; flex-direction:column; gap:8px; }
+    .card h3{ font-size:20px; color:var(--hh-brown); margin:0; }
+    .price{ font-weight:700; }
+    .tags{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tag{ font-size:12px; padding:4px 8px; border-radius:999px; background:#f0f0f0; }
+    .btn{ cursor:pointer; border:none; border-radius:10px; padding:10px 12px; font-weight:700; }
+    .btn-primary{ background:var(--hh-green); color:#fff; }
+    .btn-ghost{ background:#fff; color:var(--hh-green); border:1px solid var(--hh-green); }
+    .drawer{ position:fixed; inset:0 0 0 auto; width:min(420px, 100%); background:#fff; box-shadow: -24px 0 40px rgba(0,0,0,.15); transform: translateX(100%); transition:.35s ease; z-index: 1000; display:flex; flex-direction:column; }
+    .drawer.open{ transform: translateX(0); }
+    .drawer-header{ padding:16px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
+    .drawer-body{ padding:16px; overflow:auto; display:flex; flex-direction:column; gap:12px; }
+    .drawer-footer{ padding:16px; border-top:1px solid #eee; display:flex; flex-direction:column; gap:10px; }
+    .cart-item{ display:grid; grid-template-columns: 64px 1fr auto; gap:12px; align-items:center; }
+    .cart-item img{ width:64px; height:64px; object-fit:cover; border-radius:8px; }
+    .qty{ display:inline-flex; align-items:center; border:1px solid #ddd; border-radius:8px; overflow:hidden; }
+    .qty button{ width:28px; height:28px; border:none; background:#f5f5f5; cursor:pointer; }
+    .qty input{ width:38px; text-align:center; border:none; outline:none; }
+    .modal{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; place-items:center; z-index:1100; }
+    .modal.open{ display:grid; }
+    .modal-card{ background:#fff; width:min(760px, 92%); border-radius:14px; box-shadow:0 12px 40px rgba(0,0,0,.25); overflow:hidden; }
+    .modal-head{ padding:16px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; }
+    .modal-body{ padding:16px; }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width: 575.98px){ .row{ grid-template-columns: 1fr; } }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field input, .field select, .field textarea{ padding:10px 12px; border-radius:8px; border:1px solid #ddd; }
+    #hero .hero-container .btn-cta{ margin-top: 18px; background:#2E8B57; color:#fff; padding:12px 18px; border-radius:10px; font-weight:700; }
+    .cta .cta-inner{ display:flex; flex-direction:column; gap:12px; align-items:flex-start; }
+  </style>
+
+  <script>
+    // <<< Configura tu API aquí >>>
+    // Tu backend en Render + prefijo del controller /api
+    window.API_BASE = 'https://ev-fullstack-moviles-1.onrender.com/api';
+    // Si necesitas probar local: window.API_BASE = 'http://localhost:8080/api';
+  </script>
+</head>
+<body>
+  <header id="header">
+    <div class="container" style="display:flex; align-items:center; gap:18px;">
+      <a class="logo" href="#">
+        <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=600&auto=format&fit=crop" alt="HuertoHogar"/>
+        <h1 style="margin:0;"><a href="#">HuertoHogar</a></h1>
+      </a>
+      <nav class="navbar" style="margin-left:auto;">
+        <ul>
+          <li><a class="active" href="#productos">Productos</a></li>
+          <li><a href="#origen">Origen</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <button id="btnCart" class="cart-btn" title="Ver carrito">
+        <i class="lucide-shopping-bag"></i>
+        <span>Carrito</span>
+        <span id="cartCount" class="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <section id="hero">
+    <div class="youtube-background" aria-hidden="true">
+      <iframe src="https://www.youtube.com/embed/NtQkz0aM3bQ?autoplay=1&mute=1&controls=0&loop=1&playlist=NtQkz0aM3bQ&modestbranding=1&playsinline=1" frameborder="0" allow="autoplay; fullscreen"></iframe>
+    </div>
+    <div class="hero-container">
+      <h1>Del campo a tu hogar</h1>
+      <h2>Frutas y verduras frescas, cosechadas responsablemente</h2>
+      <a href="#productos" class="btn-cta">Comprar ahora</a>
+    </div>
+  </section>
+
+  <main id="main">
+    <section id="productos">
+      <div class="container">
+        <header class="section-title" style="margin-bottom:6px;">
+          <h2>Productos</h2>
+          <p>Selecciona por categoría, busca por nombre y añade al carrito.</p>
+        </header>
+
+        <div class="toolbar">
+          <div class="left">
+            <input id="search" class="search" type="search" placeholder="Buscar (p. ej. manzana)…" />
+            <select id="category" class="select">
+              <option value="">Todas las categorías</option>
+              <option>Frutas</option>
+              <option>Verduras</option>
+              <option>Caja semanal</option>
+              <option>Otros</option>
+            </select>
+          </div>
+          <div class="right">
+            <select id="sort" class="select">
+              <option value="pop">Más populares</option>
+              <option value="price-asc">Precio: bajo a alto</option>
+              <option value="price-desc">Precio: alto a bajo</option>
+              <option value="name-asc">Nombre A→Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="grid" class="grid" style="margin-top:6px;"></div>
+      </div>
+    </section>
+
+    <section id="origen" class="cta">
+      <div class="container">
+        <div class="content-box cta-inner">
+          <h3>Nuestro origen</h3>
+          <p>Trabajamos con pequeños productores locales, privilegiando la cosecha de temporada y la logística de bajo impacto.</p>
+          <a href="#contacto" class="cta-btn">Quiero saber más</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto">
+      <div class="container grid">
+        <div class="col-6 col-12">
+          <h3>Escríbenos</h3>
+          <p>¿Dudas sobre envíos o suscripciones? Resolvemos en 24h.</p>
+          <form id="contactForm" class="grid" onsubmit="event.preventDefault(); alert('¡Gracias! Te contactaremos.'); this.reset();">
+            <div class="col-6 col-12 field"><label>Nombre</label><input required /></div>
+            <div class="col-6 col-12 field"><label>Email</label><input type="email" required /></div>
+            <div class="col-12 field"><label>Mensaje</label><textarea rows="4" required></textarea></div>
+            <div class="col-12"><button class="btn btn-primary" type="submit">Enviar</button></div>
+          </form>
+        </div>
+        <div class="col-6 col-12">
+          <h3>Horario y entregas</h3>
+          <ul>
+            <li>Retiro en punto: Lun–Sáb 10:00–18:00</li>
+            <li>Despachos: Región de Valparaíso y Metropolitana</li>
+            <li>Pago: Transferencia, débito/crédito (por integrar)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside id="drawer" class="drawer" aria-hidden="true" aria-label="Carrito de compras">
+    <div class="drawer-header">
+      <strong>Tu carrito</strong>
+      <button id="closeCart" class="btn btn-ghost"><i class="lucide-x"></i> Cerrar</button>
+    </div>
+    <div id="cartItems" class="drawer-body"></div>
+    <div class="drawer-footer">
+      <div style="display:flex; justify-content:space-between;">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">$0</strong>
+      </div>
+      <button id="btnCheckout" class="btn btn-primary">Ir a pagar</button>
+    </div>
+  </aside>
+
+  <div id="checkoutModal" class="modal" role="dialog" aria-modal="true" aria-label="Finalizar compra">
+    <div class="modal-card">
+      <div class="modal-head">
+        <strong>Finalizar compra</strong>
+        <button id="closeCheckout" class="btn btn-ghost"><i class="lucide-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div>
+            <h4>Datos de envío</h4>
+            <div class="field"><label>Nombre y Apellido</label><input id="shipName" required></div>
+            <div class="field"><label>Correo</label><input id="shipEmail" type="email" required></div>
+            <div class="field"><label>Teléfono</label><input id="shipPhone" required></div>
+            <div class="field"><label>Dirección</label><input id="shipAddr" required></div>
+            <div class="row">
+              <div class="field"><label>Ciudad</label><input id="shipCity" required></div>
+              <div class="field"><label>Región</label>
+                <select id="shipRegion">
+                  <option>Valparaíso</option>
+                  <option>Metropolitana</option>
+                  <option>Biobío</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4>Resumen</h4>
+            <div id="orderSummary" style="max-height:260px; overflow:auto; border:1px solid #eee; border-radius:8px; padding:8px;"></div>
+            <div style="display:flex; justify-content:space-between; margin-top:10px;">
+              <span>Total</span>
+              <strong id="orderTotal">$0</strong>
+            </div>
+            <button id="confirmOrder" class="btn btn-primary" style="width:100%; margin-top:12px;">Confirmar pedido</button>
+            <p style="font-size:12px; opacity:.75; margin-top:8px;">* Envío directo a tu API Java/Mongo en Render.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+    const $ = (sel, el=document) => el.querySelector(sel);
+
+    // ========================= API =========================
+    let products = [];
+
+    async function fetchProducts(){
+      try{
+        const res = await fetch(`${getApiBase()}/productos`);
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        products = data.map(p => ({
+          id: p.id,
+          name: p.nombre,
+          cat: p.tipoStock || 'Catálogo',
+          price: Number(p.precio)||0,
+          img: placeholderImg(p.nombre),
+          tags: [p.codigo ? `Código: ${p.codigo}` : ''],
+          popular: true
+        }));
+        renderGrid(currentList());
+      }catch(err){
+        console.error('Error cargando productos', err);
+        $('#grid').innerHTML = `<div class="col-12"><p>No se pudo cargar el catálogo. Reintenta más tarde.</p></div>`;
+      }
+    }
+
+    function placeholderImg(name='Producto'){
+      const q = encodeURIComponent(name||'producto');
+      return `https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=800&auto=format&fit=crop&sig=${q}`;
+    }
+
+    function getApiBase(){
+      return window.API_BASE || `${location.origin}/api`;
+    }
+
+    // ====================== Catálogo UI =====================
+    function renderGrid(list){
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      list.forEach(p => {
+        const col = document.createElement('div');
+        col.className = 'col-3';
+        col.innerHTML = `
+          <article class="card" data-id="${p.id}">
+            <img class="thumb" src="${p.img}" alt="${p.name}">
+            <div class="body">
+              <h3>${p.name}</h3>
+              <div class="tags">${p.tags.filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+              <div style="display:flex; gap:10px; align-items:center; justify-content:space-between;">
+                <span class="price">${CLP.format(p.price)}</span>
+                <button class="btn btn-primary add">Añadir</button>
+              </div>
+            </div>
+          </article>`;
+        grid.appendChild(col);
+      });
+    }
+
+    function currentList(){
+      const q = (document.getElementById('search').value||'').trim().toLowerCase();
+      const cat = document.getElementById('category').value;
+      const sort = document.getElementById('sort').value;
+      let list = products.filter(p => (!cat || p.cat===cat) && (!q || p.name.toLowerCase().includes(q)) );
+      switch(sort){
+        case 'price-asc': list.sort((a,b)=>a.price-b.price); break;
+        case 'price-desc': list.sort((a,b)=>b.price-a.price); break;
+        case 'name-asc': list.sort((a,b)=>a.name.localeCompare(b.name)); break;
+        default: list.sort((a,b)=> (b.popular?1:0)-(a.popular?1:0));
+      }
+      return list;
+    }
+
+    // ====================== Carrito =========================
+    const state = { cart: JSON.parse(localStorage.getItem('hh_cart')||'{}') };
+    const save = () => localStorage.setItem('hh_cart', JSON.stringify(state.cart));
+    const qtyOf = id => state.cart[id]||0;
+    const countAll = () => Object.values(state.cart).reduce((a,b)=>a+b,0);
+    const subtotal = () => Object.entries(state.cart).reduce((sum,[id,qty])=>{
+      const p = products.find(x=>x.id===id); return sum + (p? p.price*qty : 0);
+    },0);
+    function addToCart(id, n=1){ state.cart[id] = Math.max(0, qtyOf(id)+n); if(state.cart[id]===0) delete state.cart[id]; save(); syncCartUI(); }
+    function setQty(id, n){ state.cart[id] = Math.max(0, n|0); if(state.cart[id]===0) delete state.cart[id]; save(); syncCartUI(); }
+
+    function syncCartUI(){
+      document.getElementById('cartCount').textContent = countAll();
+      document.getElementById('cartSubtotal').textContent = CLP.format(subtotal());
+      const wrap = document.getElementById('cartItems');
+      wrap.innerHTML = '';
+      if(Object.keys(state.cart).length===0){
+        wrap.innerHTML = '<p>Tu carrito está vacío.</p>';
+        return;
+      }
+      Object.entries(state.cart).forEach(([id,qty])=>{
+        const p = products.find(x=>x.id===id);
+        if(!p) return;
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div>
+            <div style="font-weight:700;">${p.name}</div>
+            <div style="opacity:.75;">${CLP.format(p.price)} c/u</div>
+            <div class="qty" aria-label="Cantidad">
+              <button data-id="${id}" data-act="dec">−</button>
+              <input type="number" min="0" value="${qty}" data-id="${id}" data-act="input">
+              <button data-id="${id}" data-act="inc">+</button>
+            </div>
+          </div>
+          <div style="font-weight:700;">${CLP.format(p.price*qty)}</div>`;
+        wrap.appendChild(row);
+      });
+    }
+
+    // ===================== Checkout ========================
+    function renderSummary(){
+      const box = document.getElementById('orderSummary');
+      box.innerHTML = '';
+      Object.entries(state.cart).forEach(([id,qty])=>{
+        const p = products.find(x=>x.id===id); if(!p) return;
+        const line = document.createElement('div');
+        line.style.display='flex';
+        line.style.justifyContent='space-between';
+        line.style.gap='10px';
+        line.innerHTML = `<span>${p.name} × ${qty}</span><strong>${CLP.format(p.price*qty)}</strong>`;
+        box.appendChild(line);
+      });
+      document.getElementById('orderTotal').textContent = CLP.format(subtotal());
+    }
+
+    function confirmOrder(){
+      if(Object.keys(state.cart).length===0){ alert('Tu carrito está vacío.'); return; }
+      const name = (document.getElementById('shipName').value||'').trim();
+      const email = (document.getElementById('shipEmail').value||'').trim();
+      const addr = (document.getElementById('shipAddr').value||'').trim();
+      if(!name || !email || !addr){ alert('Completa los datos de envío.'); return; }
+
+      const payload = {
+        usuarioId: window.USER_ID || null, // si tienes auth, setéalo
+        datosEnvio: {
+          nombre: name,
+          email,
+          telefono: (document.getElementById('shipPhone').value||'').trim(),
+          direccion: addr,
+          ciudad: (document.getElementById('shipCity').value||'').trim(),
+          region: document.getElementById('shipRegion').value
+        },
+        items: Object.entries(state.cart).map(([id,qty])=>{
+          const p=products.find(x=>x.id===id);
+          return { productoId:id, nombre:p?.name, precioUnitario:p?.price||0, cantidad:qty };
+        }),
+        total: subtotal(),
+        creadoEn: new Date().toISOString()
+      };
+
+      fetch(`${getApiBase()}/pedidos`, {
+        method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload)
+      })
+      .then(async r=>{ if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(order=>{
+        console.log('Pedido creado:', order);
+        alert('¡Pedido recibido! Te contactaremos para coordinar el pago y despacho.');
+        state.cart = {}; save(); syncCartUI(); openCheckout(false);
+      })
+      .catch(err=>{
+        console.error('Error creando pedido', err);
+        alert('No se pudo crear el pedido. Revisa la consola y CORS en el backend.');
+      });
+    }
+
+    // ================== Listeners & helpers =================
+    document.addEventListener('click', (e)=>{
+      const add = e.target.closest('.add');
+      if(add){ const id = add.closest('[data-id]').dataset.id; addToCart(id, 1); }
+      if(e.target.id==='btnCart') openCart(true);
+      if(e.target.id==='closeCart') openCart(false);
+      if(e.target.id==='btnCheckout'){ openCart(false); openCheckout(true); renderSummary(); }
+      if(e.target.id==='closeCheckout') openCheckout(false);
+      if(e.target.id==='confirmOrder') confirmOrder();
+
+      const btn = e.target.closest('button[data-act]');
+      if(btn){ const id = btn.dataset.id; const act = btn.dataset.act; if(act==='inc') addToCart(id, 1); if(act==='dec') addToCart(id, -1); }
+    });
+
+    document.addEventListener('input', (e)=>{
+      if(e.target.matches('input[data-act="input"]')){ const id = e.target.dataset.id; setQty(id, parseInt(e.target.value||'0',10)); }
+      if(['search','category','sort'].includes(e.target.id)){ renderGrid(currentList()); }
+    });
+
+    function openCart(show){ const d=document.getElementById('drawer'); d.classList.toggle('open', !!show); d.setAttribute('aria-hidden', (!show).toString()); }
+    function openCheckout(show){ document.getElementById('checkoutModal').classList.toggle('open', !!show); }
+
+    // Init
+    (async function(){ await fetchProducts(); syncCartUI(); })();
+  </script>
+</body>
+</html>
