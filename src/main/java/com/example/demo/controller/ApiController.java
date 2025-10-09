@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class ApiController {
 
@@ -32,7 +33,7 @@ public class ApiController {
     }
 
     // =====================================================================================
-    // ================== ENDPOINTS DE ADMINISTRACIÓN (ADMIN) ==============================
+    // ================== ENDPOINTS DE ADMINISTRACIÓN (ADMIN) =============================D
     // =====================================================================================
 
     // --- CRUD USUARIOS (ADMIN) ---
